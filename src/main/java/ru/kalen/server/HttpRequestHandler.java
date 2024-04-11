@@ -8,7 +8,7 @@ import io.netty.handler.codec.http.*;
 import io.netty.util.CharsetUtil;
 import ru.kalen.service.GameService;
 
-public class HttpRequestHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
+public class HttpRequestHandler extends SimpleChannelInboundHandler<DefaultHttpRequest> {
 
     private final GameService gameService; // Сервис, который управляет логикой игры
 
@@ -17,7 +17,7 @@ public class HttpRequestHandler extends SimpleChannelInboundHandler<FullHttpRequ
     }
 
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, FullHttpRequest request) throws Exception {
+    protected void channelRead0(ChannelHandlerContext ctx, DefaultHttpRequest request) throws Exception {
         if (HttpUtil.is100ContinueExpected(request)) {
             send100Continue(ctx);
         }
@@ -40,13 +40,13 @@ public class HttpRequestHandler extends SimpleChannelInboundHandler<FullHttpRequ
                 response = createResponse(HttpResponseStatus.OK, "Move result: " + result);
                 break;
             case "/loadGame":
-                String idGame = queryStringDecoder.parameters().get("gameId").get(0);  //getQueryParam(decoder, "gameId");
+                String idGame = queryStringDecoder.parameters().get("gameId").get(0);
                 // логика загрузки игры
                 response = createResponse(HttpResponseStatus.OK,"Game loaded " + idGame);
                 break;
             default:
-                response = createResponse(HttpResponseStatus.NOT_FOUND, "404 Not Found");
-                break;
+                ctx.fireChannelRead(request);
+                return;
         }
 
         ctx.writeAndFlush(response).addListener(ChannelFutureListener.CLOSE);

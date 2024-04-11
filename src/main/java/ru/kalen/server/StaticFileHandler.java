@@ -12,7 +12,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-public class StaticFileHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
+public class StaticFileHandler extends SimpleChannelInboundHandler<DefaultHttpRequest> {
     private final String webRoot;
 
     public StaticFileHandler(String webRoot) {
@@ -20,7 +20,7 @@ public class StaticFileHandler extends SimpleChannelInboundHandler<FullHttpReque
     }
 
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, FullHttpRequest request) throws Exception {
+    protected void channelRead0(ChannelHandlerContext ctx, DefaultHttpRequest request) throws Exception {
         if (HttpUtil.is100ContinueExpected(request)) {
             send100Continue(ctx);
         }
@@ -28,10 +28,11 @@ public class StaticFileHandler extends SimpleChannelInboundHandler<FullHttpReque
         final String uri = request.uri();
         final Path path = Paths.get(webRoot, uri).normalize().toAbsolutePath();
 
-        if (!path.startsWith(Paths.get(webRoot).normalize())) {
-            sendError(ctx, HttpResponseStatus.FORBIDDEN);
-            return;
-        }
+//TODO: сравнивать до приведения к абсолютному пути?
+//        if (!path.startsWith(Paths.get(webRoot).normalize())) {
+//            sendError(ctx, HttpResponseStatus.FORBIDDEN);
+//            return;
+//        }
 
         File file = path.toFile();
         if (file.isHidden() || !file.exists()) {

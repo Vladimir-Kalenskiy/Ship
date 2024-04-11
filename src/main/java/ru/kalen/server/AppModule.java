@@ -22,7 +22,6 @@ public class AppModule extends AbstractModule {
         bind(GameService.class).to(GameServiceImpl.class).in(Singleton.class);
         bind(Integer.class).annotatedWith(Names.named("ServerPort")).toInstance(8080);
         // Пример для Netty обработчиков
-//        bind(HttpRequestHandler.class).to(HttpRequestHandler.class).in(Singleton.class);
     }
     @Provides
     HttpRequestHandler provideHttpRequestHandler(GameService gameService) {
