@@ -23,6 +23,6 @@ public class GameLogic {
                 return "Crash! Velocity was too high.";
             }
         }
-        return "Flying...";
+        return "Flying...\nВысота: " + ship.getAltitude() + ";\nСкорость :" + ship.getVelocity() + ";\nЗапас топлива :" + ship.getFuel();
     }
 }

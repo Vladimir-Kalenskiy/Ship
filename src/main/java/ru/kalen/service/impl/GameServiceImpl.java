@@ -22,6 +22,7 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public int startNewGame() throws SQLException {
+//        moveDao.
         // Создает новую игру в базе данных и возвращает ее ID
         return gameDao.createGame();
     }
@@ -31,7 +32,18 @@ public class GameServiceImpl implements GameService {
         // Получить текущее состояние игры из базы данных
         GameData gameData = moveDao.getLastMove(gameId);
         if (gameData == null) {
-            throw new IllegalStateException("Game not found!");
+            // Создать объект Ship с текущими данными
+            Ship ship = new Ship(100, 0, 140);
+            GameLogic gameLogic = new GameLogic(ship);
+
+            // Выполнить ход и получить результат
+            String result = gameLogic.performStep(fuelRate);
+
+            // Сохранить новое состояние игры в базе данных
+            moveDao.saveMove(gameId, ship.getAltitude(), ship.getVelocity(), ship.getFuel(), fuelRate);
+
+            return result;
+//            throw new IllegalStateException("Game not found!");
         }
 
         // Создать объект Ship с текущими данными
