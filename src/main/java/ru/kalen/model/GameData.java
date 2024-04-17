@@ -9,6 +9,7 @@ public class GameData {
     private final double velocity;
     private final double fuel;
     private final double fuelRate;
+    private String statusGame;
 
     public GameData(int gameId, double altitude, double velocity, double fuel, double fuelRate) {
         this.gameId = gameId;
@@ -16,5 +17,6 @@ public class GameData {
         this.velocity = velocity;
         this.fuel = fuel;
         this.fuelRate = fuelRate;
+        this.statusGame = "Failed";
     }
 }

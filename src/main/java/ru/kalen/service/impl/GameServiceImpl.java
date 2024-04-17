@@ -56,6 +56,12 @@ public class GameServiceImpl implements GameService {
         // Сохранить новое состояние игры в базе данных
         moveDao.saveMove(gameId, ship.getAltitude(), ship.getVelocity(), ship.getFuel(), fuelRate);
 
+        if(result.contains("Successful landing!")){
+            gameDao.updateGameStatus(gameId, "WIN");
+        } else if (result.contains("Crash!")){
+            gameDao.updateGameStatus(gameId, "LOSE");
+        }
+
         return result;
     }
 
@@ -63,5 +69,10 @@ public class GameServiceImpl implements GameService {
     public GameData getGameStatus(int gameId) throws SQLException {
         // Получить последнее состояние игры из базы данных
         return moveDao.getLastMove(gameId);
+    }
+
+    public void finishGame(int gameId, boolean isWin) throws SQLException {
+        String newStatus = isWin ? "WIN" : "LOSE";
+        gameDao.updateGameStatus(gameId, newStatus);
     }
 }

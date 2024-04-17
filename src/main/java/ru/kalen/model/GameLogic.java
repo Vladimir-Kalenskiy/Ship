@@ -1,9 +1,11 @@
 package ru.kalen.model;
 
+import ru.kalen.repository.dao.GameDao;
+
 public class GameLogic {
     private Ship ship;
-    private double gravity = 1.62; // Гравитация на Луне, м/с^2
-    private double thrustPerFuelUnit = 0.15; // Ускорение на единицу топлива
+    private double gravity = 9.8;    //1.62;  Гравитация на Луне, м/с^2
+    private double thrustPerFuelUnit = 0.98; //0.15;  Ускорение на единицу топлива
     private final double maxLandingVelocity = 5.0; // Максимально допустимая скорость при посадке
 
     public GameLogic(Ship ship) {
@@ -18,11 +20,12 @@ public class GameLogic {
         // Проверка условий посадки или крушения
         if (ship.getAltitude() <= 0) {
             if (Math.abs(ship.getVelocity()) <= maxLandingVelocity) {
+
                 return "Successful landing!";
             } else {
                 return "Crash! Velocity was too high.";
             }
         }
-        return "Flying...\nВысота: " + ship.getAltitude() + ";\nСкорость :" + ship.getVelocity() + ";\nЗапас топлива :" + ship.getFuel();
+        return "Flying... Высота: " + ship.getAltitude() + "; Скорость :" + ship.getVelocity() + "; Запас топлива :" + ship.getFuel() + ".";
     }
 }

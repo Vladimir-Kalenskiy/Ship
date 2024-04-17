@@ -20,4 +20,17 @@ public class GameDaoImpl implements GameDao {
             }
         }
     }
+
+    @Override
+    public void updateGameStatus(int gameId, String status) throws SQLException {
+        String sql = "UPDATE games SET status = ? WHERE gameId = ?";
+        try (Connection conn = DatabaseManager.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, status);
+            stmt.setInt(2, gameId);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new SQLException("Error updating game status", e);
+        }
+    }
 }

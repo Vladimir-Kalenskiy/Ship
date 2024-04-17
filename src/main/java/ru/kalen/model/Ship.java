@@ -23,7 +23,7 @@ public class Ship {
             fuelRate = fuel; // Нельзя потратить больше топлива, чем есть
         }
 
-        double acceleration = thrustAcceleration - gravity;  // Общее ускорение
+        double acceleration = gravity - thrustAcceleration ; //thrustAcceleration - gravity;  // Общее ускорение
         velocity += acceleration * timeStep;                // Обновление скорости
         altitude -= velocity * timeStep;                    // Обновление высоты
         fuel -= fuelRate;                                   // Уменьшение топлива

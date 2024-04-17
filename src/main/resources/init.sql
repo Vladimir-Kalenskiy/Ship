@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS Games (
                                      gameId INT AUTO_INCREMENT PRIMARY KEY,
-                                     createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP()
+                                     status VARCHAR(10) DEFAULT 'PROCESS'
 );
 
 CREATE TABLE IF NOT EXISTS Moves (
